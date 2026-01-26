@@ -1,98 +1,129 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
+import React from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Card } from '../../src/components/Card';
+import { Icon } from '../../src/components/Icon';
+import { Colors } from '../../src/constants/colors';
+import { Spacing } from '../../src/constants/spacing';
+import { Typography } from '../../src/constants/typography';
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    const router = useRouter();
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
+    return (
+        <SafeAreaView style={styles.container}>
+            <ScrollView contentContainerStyle={styles.content}>
+                <View style={styles.header}>
+                    {/* Logo could go here */}
+                    <View style={styles.logoContainer}>
+                        <LinearGradient
+                            colors={Colors.primaryGradient}
+                            style={styles.logoBackground}
+                        >
+                            <Icon name="qr-code" type="Ionicons" size={32} color="#FFF" />
+                        </LinearGradient>
+                    </View>
+                    <Text style={styles.appName}>QR Master</Text>
+                    <Text style={styles.tagline}>Scan & Create QR Codes Instantly</Text>
+                </View>
+
+                <View style={styles.cardsContainer}>
+                    <Card
+                        style={styles.actionCard}
+                        onPress={() => router.push('/(tabs)/scan')}
+                    >
+                        <View style={styles.cardContent}>
+                            <View style={[styles.iconContainer, { backgroundColor: '#EEF2FF' }]}>
+                                <Icon name="camera-outline" type="Ionicons" size={40} color={Colors.primary} />
+                            </View>
+                            <Text style={styles.cardTitle}>Scan QR Code</Text>
+                            <Text style={styles.cardDescription}>Scan any QR code using your camera</Text>
+                        </View>
+                    </Card>
+
+                    <Card
+                        style={styles.actionCard}
+                        onPress={() => router.push('/(tabs)/create')}
+                    >
+                        <View style={styles.cardContent}>
+                            <View style={[styles.iconContainer, { backgroundColor: '#F3E8FF' }]}>
+                                <Icon name="add-circle-outline" type="Ionicons" size={40} color={Colors.secondary} />
+                            </View>
+                            <Text style={styles.cardTitle}>Create QR Code</Text>
+                            <Text style={styles.cardDescription}>Generate custom QR codes instantly</Text>
+                        </View>
+                    </Card>
+                </View>
+            </ScrollView>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+    container: {
+        flex: 1,
+        backgroundColor: Colors.background,
+    },
+    content: {
+        padding: Spacing.screenPadding,
+        flexGrow: 1,
+        justifyContent: 'center',
+    },
+    header: {
+        alignItems: 'center',
+        marginBottom: Spacing.xxl,
+    },
+    logoContainer: {
+        marginBottom: Spacing.md,
+        shadowColor: Colors.primary,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+        elevation: 6,
+    },
+    logoBackground: {
+        width: 80,
+        height: 80,
+        borderRadius: 24,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    appName: {
+        ...Typography.h1,
+        marginBottom: Spacing.xs,
+    },
+    tagline: {
+        ...Typography.body,
+        color: Colors.textSecondary,
+        textAlign: 'center',
+    },
+    cardsContainer: {
+        gap: Spacing.lg,
+    },
+    actionCard: {
+        padding: Spacing.xl,
+        borderRadius: Spacing.borderRadius.xl,
+    },
+    cardContent: {
+        alignItems: 'center',
+    },
+    iconContainer: {
+        width: 80,
+        height: 80,
+        borderRadius: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: Spacing.md,
+    },
+    cardTitle: {
+        ...Typography.h2,
+        marginBottom: Spacing.xs,
+    },
+    cardDescription: {
+        ...Typography.body,
+        color: Colors.textSecondary,
+        textAlign: 'center',
+    },
 });
