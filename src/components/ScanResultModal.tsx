@@ -1,6 +1,6 @@
 import * as Clipboard from 'expo-clipboard';
 import React, { useEffect, useRef } from 'react';
-import { Animated, Linking, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Animated, Linking, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import { Colors } from '../constants/colors';
 import { Spacing } from '../constants/spacing';
 import { Typography } from '../constants/typography';
@@ -53,12 +53,17 @@ export const ScanResultModal: React.FC<ScanResultModalProps> = ({ visible, data,
 
     return (
         <View style={styles.overlayWrapper}>
+            <TouchableOpacity
+                style={StyleSheet.absoluteFill}
+                activeOpacity={1}
+                onPress={onClose}
+            />
             <Animated.View style={[styles.container, { transform: [{ translateY: slideAnim }] }]}>
                 <View style={styles.handle} />
 
                 <View style={styles.header}>
                     <View style={styles.typeBadge}>
-                        <Icon name="qr-code" size={16} color={Colors.primary} />
+                        <Icon name="qr-code-outline" type="Ionicons" size={16} color={Colors.primary} />
                         <Text style={styles.typeText}>{type}</Text>
                     </View>
                 </View>

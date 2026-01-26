@@ -101,7 +101,13 @@ export default function ScanScreen() {
                 {/* Header */}
                 <View style={styles.header}>
                     <TouchableOpacity
-                        onPress={() => router.back()}
+                        onPress={() => {
+                            if (router.canGoBack()) {
+                                router.back();
+                            } else {
+                                router.navigate('/(tabs)');
+                            }
+                        }}
                         style={styles.iconButton}
                     >
                         <Icon name="arrow-back" type="Ionicons" size={24} color="#FFF" />
