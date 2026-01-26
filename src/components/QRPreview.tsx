@@ -35,17 +35,29 @@ export const QRPreview: React.FC<QRPreviewProps> = ({ value }) => {
         try {
             if (qrRef.current) {
                 qrRef.current.toDataURL(async (data: string) => {
-                    const filename = FileSystem.documentDirectory + `qr_code_${Date.now()}.png`;
-                    await FileSystem.writeAsStringAsync(filename, data, {
-                        encoding: FileSystem.EncodingType.Base64,
-                    });
-                    await MediaLibrary.saveToLibraryAsync(filename);
-                    Alert.alert("Saved", "QR Code saved to gallery successfully!");
+                    try {
+                        const base64Code = data.startsWith('data:image/png;base64,')
+                            ? data.replace('data:image/png;base64,', '')
+                            : data;
+
+                        const dir = FileSystem.cacheDirectory;
+                        if (!dir) throw new Error("Storage unavailable");
+
+                        const filename = dir + `qr_code_${Date.now()}.png`;
+                        await FileSystem.writeAsStringAsync(filename, base64Code, {
+                            encoding: 'base64',
+                        });
+                        await MediaLibrary.saveToLibraryAsync(filename);
+                        Alert.alert("Saved", "QR Code saved to gallery successfully!");
+                    } catch (err) {
+                        console.error(err);
+                        Alert.alert("Error", "Failed to save: " + (err instanceof Error ? err.message : String(err)));
+                    }
                 });
             }
         } catch (error) {
             console.error(error);
-            Alert.alert("Error", "Failed to save QR Code.");
+            Alert.alert("Error", "Failed to init save: " + (error instanceof Error ? error.message : String(error)));
         } finally {
             setLoading(false);
         }
@@ -56,21 +68,33 @@ export const QRPreview: React.FC<QRPreviewProps> = ({ value }) => {
         try {
             if (qrRef.current) {
                 qrRef.current.toDataURL(async (data: string) => {
-                    const filename = FileSystem.documentDirectory + `qr_code_share_${Date.now()}.png`;
-                    await FileSystem.writeAsStringAsync(filename, data, {
-                        encoding: FileSystem.EncodingType.Base64,
-                    });
+                    try {
+                        const base64Code = data.startsWith('data:image/png;base64,')
+                            ? data.replace('data:image/png;base64,', '')
+                            : data;
 
-                    if (await Sharing.isAvailableAsync()) {
-                        await Sharing.shareAsync(filename);
-                    } else {
-                        Alert.alert("Error", "Sharing is not available on this device");
+                        const dir = FileSystem.cacheDirectory;
+                        if (!dir) throw new Error("Storage unavailable");
+
+                        const filename = dir + `qr_code_share_${Date.now()}.png`;
+                        await FileSystem.writeAsStringAsync(filename, base64Code, {
+                            encoding: 'base64',
+                        });
+
+                        if (await Sharing.isAvailableAsync()) {
+                            await Sharing.shareAsync(filename);
+                        } else {
+                            Alert.alert("Error", "Sharing is not available on this device");
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        Alert.alert("Error", "Failed to share: " + (err instanceof Error ? err.message : String(err)));
                     }
                 });
             }
         } catch (error) {
             console.error(error);
-            Alert.alert("Error", "Failed to share QR Code.");
+            Alert.alert("Error", "Failed to init share: " + (error instanceof Error ? error.message : String(error)));
         } finally {
             setLoading(false);
         }
