@@ -1,7 +1,6 @@
-import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card } from '../../src/components/Card';
 import { Icon } from '../../src/components/Icon';
@@ -14,20 +13,14 @@ export default function HomeScreen() {
 
     return (
         <SafeAreaView style={styles.container}>
+            <View style={styles.header}>
+                <Image
+                    source={require('../../assets/images/qr.png')}
+                    style={styles.logoImage}
+                />
+                <Text style={styles.appName}>QR Instant</Text>
+            </View>
             <ScrollView contentContainerStyle={styles.content}>
-                <View style={styles.header}>
-                    {/* Logo could go here */}
-                    <View style={styles.logoContainer}>
-                        <LinearGradient
-                            colors={Colors.primaryGradient}
-                            style={styles.logoBackground}
-                        >
-                            <Icon name="qr-code" type="Ionicons" size={32} color="#FFF" />
-                        </LinearGradient>
-                    </View>
-                    <Text style={styles.appName}>QR Master</Text>
-                    <Text style={styles.tagline}>Scan & Create QR Codes Instantly</Text>
-                </View>
 
                 <View style={styles.cardsContainer}>
                     <Card
@@ -66,38 +59,27 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Colors.background,
     },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: Spacing.screenPadding,
+        paddingVertical: Spacing.md,
+        borderBottomWidth: 1,
+        borderBottomColor: Colors.border,
+    },
+    logoImage: {
+        width: 40,
+        height: 40,
+        borderRadius: 10,
+        marginRight: Spacing.sm,
+    },
+    appName: {
+        ...Typography.h2,
+    },
     content: {
         padding: Spacing.screenPadding,
         flexGrow: 1,
         justifyContent: 'center',
-    },
-    header: {
-        alignItems: 'center',
-        marginBottom: Spacing.xxl,
-    },
-    logoContainer: {
-        marginBottom: Spacing.md,
-        shadowColor: Colors.primary,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
-        elevation: 6,
-    },
-    logoBackground: {
-        width: 80,
-        height: 80,
-        borderRadius: 24,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    appName: {
-        ...Typography.h1,
-        marginBottom: Spacing.xs,
-    },
-    tagline: {
-        ...Typography.body,
-        color: Colors.textSecondary,
-        textAlign: 'center',
     },
     cardsContainer: {
         gap: Spacing.lg,
