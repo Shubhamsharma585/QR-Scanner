@@ -1,11 +1,17 @@
 {
   "expo": {
-    "name": "QR Instant - Scan & Create",
+    "name": "QR Instant – Scan & Create",
     "slug": "qr-code",
-    "version": "2.0.0",
+    "version": "4.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/qr.png",
     "scheme": "qrcode",
+    "updates": {
+      "url": "https://u.expo.dev/d51e01e1-9336-4f49-af7c-91b8270a5a5e"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -22,14 +28,14 @@
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/qr.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/qr.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
