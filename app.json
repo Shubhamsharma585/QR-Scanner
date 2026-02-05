@@ -33,6 +33,14 @@
     "plugins": [
       "expo-router",
       [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow $(PRODUCT_NAME) to access your photos.",
+          "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
+          "isStandard": true
+        }
+      ],
+      [
         "expo-splash-screen",
         {
           "image": "./assets/images/qr.png",
